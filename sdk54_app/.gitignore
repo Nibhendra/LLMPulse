@@ -41,7 +41,3 @@ app-example
 # generated native folders
 /ios
 /android
-
-# API Keys & Firebase Config
-.env
-google-services.json

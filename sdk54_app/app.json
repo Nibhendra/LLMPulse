@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "LLM Pulse",
-    "slug": "llm-pulse",
-    "description": "Latest AI model updates, simplified.",
+    "name": "sdk54_app",
+    "slug": "sdk54_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -20,9 +19,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.nibhendra.llmpulse",
-      "googleServicesFile": "./google-services.json"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
@@ -41,20 +38,11 @@
             "backgroundColor": "#000000"
           }
         }
-      ],
-      "expo-web-browser",
-      "@react-native-google-signin/google-signin"
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "19b4fad5-29a8-4d0c-97a0-1d1a873730ff"
-      }
-    },
-    "owner": "hunyyy_boy"
+    }
   }
 }

@@ -1,56 +1,75 @@
-# Welcome to your Expo app 👋
+# LLM Pulse 📈🧠
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Your daily radar for the AI revolution.**
 
-## Get started
+Keeping up with AI is a full-time job. Between new model drops, benchmark records, and open-source breakthroughs, the noise is deafening. **LLM Pulse** is a premium, real-time mobile app designed to cut through the clutter and deliver high-signal AI updates straight to your pocket.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- **Live AI Radar**: Real-time updates categorized across major labs (OpenAI, Google Gemini, Anthropic Claude, Hugging Face, AI Coding Tools, and Open Source).
+- **Impact Scores**: Every update is algorithmicly rated (out of 10) so you know instantly if it's a minor patch or a massive breakthrough.
+- **"Why It Matters" Summaries**: Bite-sized executive takeaways attached to every update card so you don't have to read 20-page whitepapers.
+- **Premium 3D UI/UX**: Built with 60fps 3D-perspective floating cards, holographic glowing backdrops, spring-physics interactions, and a Blinkit-inspired bottom-sheet gateway.
+- **Dark/Light Mode**: Seamlessly switch between curated Dark and Light themes.
+- **Cloud Sync & Bookmarks**: Native Google Sign-In lets you securely bookmark your favorite benchmarks and sync your reading list across all your devices via Firebase.
+- **Guest Mode**: Full read-only access for users who prefer to browse without an account.
 
-   ```bash
-   npx expo start
-   ```
+## 🛠 Tech Stack
 
-In the output, you'll find options to open the app in a
+- **Frontend Framework**: [React Native](https://reactnative.dev/) with [Expo (SDK 54)](https://expo.dev/)
+- **Language**: TypeScript
+- **Navigation**: Expo Router (File-based routing)
+- **UI & Animations**: React Native `Animated` API with native driver for buttery smooth 3D transforms.
+- **Authentication**: Firebase Auth paired with `@react-native-google-signin/google-signin` for native Android Play Services bottom-sheet login.
+- **Database**: Firebase Firestore (real-time cloud syncing for feeds and bookmarks).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🚀 Getting Started
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prerequisites
+- Node.js (v18+)
+- Android Studio / Android SDK (for local builds)
+- A Firebase project (for the database and Auth)
 
-## Get a fresh project
-
-When you're ready, run:
-
+### 1. Installation
+Clone the repository and install dependencies:
 ```bash
-npm run reset-project
+git clone https://github.com/Nibhendra/LLMPulse.git
+cd LLMPulse
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Environment Setup
+You will need to configure Firebase and Google OAuth. 
+1. Create a `.env` file in the root directory.
+2. Add your Firebase config keys:
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY=your_api_key
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
+EXPO_PUBLIC_GOOGLE_CLIENT_ID=your_google_web_client_id
+```
+3. **Android Native Auth:** Download your `google-services.json` from the Firebase Console and place it in the root directory.
 
-### Other setup steps
+### 3. Running the App
+To run the app locally on an emulator or physical device using Expo Go:
+```bash
+npx expo start
+```
+*Note: Native Google Sign-In requires a standalone build and will not work inside the standard Expo Go app.*
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### 4. Building the APK
+To build the standalone APK locally using your machine's CPU (requires Android SDK):
+```bash
+npx expo prebuild --platform android --clean
+cd android && gradlew assembleRelease
+```
+The APK will be located in `android/app/build/outputs/apk/release/`.
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+*Built with ❤️ for the AI community.*
