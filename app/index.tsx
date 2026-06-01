@@ -590,6 +590,39 @@ export default function HomeScreen() {
     }
   };
 
+  const handleClearChat = () => {
+    Alert.alert(
+      'Clear Chat History',
+      'Are you sure you want to delete all messages? This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Clear All',
+          style: 'destructive',
+          onPress: async () => {
+            const welcome: ChatMessage = {
+              id: '0',
+              text: "Chat cleared! I'm your LLM Pulse Intelligence Assistant. Ask me anything about the latest AI models and releases.",
+              sender: 'assistant',
+              timestamp: new Date().toISOString(),
+            };
+            setChatMessages([welcome]);
+            if (currentUser) {
+              const docRef = doc(db, 'chats', currentUser.uid);
+              await setDoc(docRef, {
+                userId: currentUser.uid,
+                messages: [welcome],
+                updatedAt: new Date()
+              });
+            } else {
+              await AsyncStorage.setItem('pulse_guest_chat', JSON.stringify([welcome]));
+            }
+          }
+        }
+      ]
+    );
+  };
+
   // Swiggy & Zepto Style Header + Top promo slider
   // Sticky Top Header Bar (matches premium Swiggy/Blinkit header layouts)
   const renderStickyHeader = () => (
@@ -1096,9 +1129,16 @@ export default function HomeScreen() {
                   AI Pulse Intel Assistant
                 </Text>
               </View>
-              <Pressable onPress={() => setChatVisible(false)} style={styles.closeBtn}>
-                <Ionicons name="close" size={20} color={isDark ? "#9ca3af" : "#4b5563"} />
-              </Pressable>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                {chatMessages.length > 1 && (
+                  <Pressable onPress={handleClearChat} style={{ padding: 4 }}>
+                    <Ionicons name="trash-outline" size={18} color={isDark ? '#9ca3af' : '#6b7280'} />
+                  </Pressable>
+                )}
+                <Pressable onPress={() => setChatVisible(false)} style={styles.closeBtn}>
+                  <Ionicons name="close" size={20} color={isDark ? "#9ca3af" : "#4b5563"} />
+                </Pressable>
+              </View>
             </View>
 
             {/* Auth error banner - shown only when there's an error */}
