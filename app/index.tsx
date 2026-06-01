@@ -412,16 +412,14 @@ export default function HomeScreen() {
     const anim = bubbleAnims[categoryId];
     if (anim) {
       Animated.sequence([
-        Animated.spring(anim, {
-          toValue: 1.22,
-          friction: 3,
-          tension: 300,
+        Animated.timing(anim, {
+          toValue: 1.15,
+          duration: 80,
           useNativeDriver: true,
         }),
-        Animated.spring(anim, {
+        Animated.timing(anim, {
           toValue: 1,
-          friction: 4,
-          tension: 120,
+          duration: 80,
           useNativeDriver: true,
         }),
       ]).start();
@@ -798,7 +796,8 @@ export default function HomeScreen() {
 
   const renderGatewayScreen = () => {
     return (
-      <View style={[styles.gatewayContainer, isDark ? styles.bgDark : styles.bgLight]}>
+      <View style={[styles.gatewayContainer, styles.bgLight]}>
+
         {/* Holographic Glowing Backdrop Circles */}
         <Animated.View 
           pointerEvents="none"
@@ -821,22 +820,8 @@ export default function HomeScreen() {
           ]} 
         />
 
-        <View style={styles.gatewayHeaderRow}>
-          {/* Toggle Theme button inside gateway */}
-          <Pressable 
-            onPress={toggleTheme}
-            style={[styles.themePill, isDark ? styles.themePillDark : styles.themePillLight]}
-          >
-            <Ionicons 
-              name={isDark ? "sunny" : "moon"} 
-              size={12} 
-              color={isDark ? "#eab308" : "#4b5563"} 
-            />
-            <Text style={[styles.themeText, isDark ? { color: '#eab308' } : { color: '#4b5563' }]}>
-              {isDark ? "LIGHT" : "DARK"}
-            </Text>
-          </Pressable>
-        </View>
+
+
 
         <View 
           style={styles.gatewayScrollContent}
@@ -1116,65 +1101,13 @@ export default function HomeScreen() {
               </Pressable>
             </View>
 
-            {/* Swiggy-Style Authentication Promotion/Status Header Banner */}
-            <View style={[
-              styles.authHeaderBanner, 
-              isDark ? styles.authHeaderDark : styles.authHeaderLight,
-              isDark ? styles.sheetBorderDark : styles.sheetBorderLight
-            ]}>
-              {currentUser ? (
-                <View style={styles.authStatusRow}>
-                  <View style={styles.activeSyncIndicator}>
-                    <View style={styles.greenTelemetryPulse} />
-                    <Text style={[styles.authStatusLabel, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]} numberOfLines={1}>
-                      CLOUD SYNC ACTIVE • {currentUser.isAnonymous ? "Guest Profile" : currentUser.email}
-                    </Text>
-                  </View>
-                  <Pressable 
-                    onPress={handleSignOut}
-                    style={({ pressed }) => [
-                      styles.authActionButton,
-                      isDark ? styles.authActDark : styles.authActLight,
-                      pressed && styles.pillPressed
-                    ]}
-                  >
-                    <Text style={[styles.authActionText, { color: '#ef4444' }]}>DISCONNECT</Text>
-                  </Pressable>
-                </View>
-              ) : (
-                <View style={{ width: '100%' }}>
-                  <View style={styles.authStatusRow}>
-                    <View style={styles.activeSyncIndicator}>
-                      <View style={[styles.greenTelemetryPulse, { backgroundColor: '#eab308' }]} />
-                      <Text style={[styles.authStatusLabel, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]} numberOfLines={1}>
-                        LOCAL GUEST MODE • Offline Storage
-                      </Text>
-                    </View>
-                    <Pressable 
-                      disabled={authLoading}
-                      onPress={() => handleGoogleSignInNative()}
-                      style={({ pressed }) => [
-                        styles.authActionButton,
-                        { borderColor: getCategoryColor('All'), backgroundColor: 'rgba(124, 58, 237, 0.08)' },
-                        pressed && styles.pillPressed
-                      ]}
-                    >
-                      <Ionicons name="logo-google" size={10} color={getCategoryColor('All')} style={{ marginRight: 3 }} />
-                      <Text style={[styles.authActionText, { color: getCategoryColor('All') }]}>CONNECT GOOGLE</Text>
-                    </Pressable>
-                  </View>
-                  
-                  {authError && (
-                    <View style={[styles.authErrorContainer, isDark ? styles.errBgDark : styles.errBgLight, { marginTop: 8 }]}>
-                      <Ionicons name="warning" size={12} color="#ef4444" style={{ marginRight: 6 }} />
-                      <Text style={[styles.authErrorText, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]} numberOfLines={2}>
-                        {authError}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              )}
-            </View>
+            {/* Auth error banner - shown only when there's an error */}
+            {authError && (
+              <View style={[styles.authErrorContainer, { marginHorizontal: 16, marginBottom: 8, marginTop: 4 }]}>
+                <Ionicons name="warning" size={12} color="#ef4444" style={{ marginRight: 6 }} />
+                <Text style={{ color: '#ef4444', fontSize: 12 }} numberOfLines={2}>{authError}</Text>
+              </View>
+            )}
 
             {/* List of active chat messages */}
             <FlatList
@@ -1246,28 +1179,35 @@ export default function HomeScreen() {
             )}
 
             {/* Input message box */}
-            <View style={[styles.inputContainer, isDark ? styles.sheetBorderDark : styles.sheetBorderLight]}>
-              <TextInput
-                value={chatInput}
-                onChangeText={setChatInput}
-                placeholder="Ask about OpenAI, Claude, pricing, spec comparison..."
-                placeholderTextColor={isDark ? "#4b5563" : "#9ca3af"}
-                editable={!chatLoading}
-                style={[styles.chatTextInput, isDark ? styles.inputDark : styles.inputLight]}
-              />
-              <Pressable
-                disabled={chatLoading || !chatInput.trim()}
-                onPress={() => triggerChatbotQuery(chatInput)}
-                style={({ pressed }) => [
-                  styles.sendButton,
-                  { backgroundColor: getCategoryColor('All') },
-                  (chatLoading || !chatInput.trim()) && { opacity: 0.5 },
-                  pressed && { opacity: 0.8 }
-                ]}
-              >
-                <Ionicons name="arrow-up" size={16} color="#ffffff" />
-              </Pressable>
-            </View>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
+            >
+              <View style={[styles.inputContainer, isDark ? styles.sheetBorderDark : styles.sheetBorderLight]}>
+                <TextInput
+                  value={chatInput}
+                  onChangeText={setChatInput}
+                  placeholder="Ask about OpenAI, Claude, pricing, spec comparison..."
+                  placeholderTextColor={isDark ? "#4b5563" : "#9ca3af"}
+                  editable={!chatLoading}
+                  style={[styles.chatTextInput, isDark ? styles.inputDark : styles.inputLight]}
+                  returnKeyType="send"
+                  onSubmitEditing={() => chatInput.trim() && triggerChatbotQuery(chatInput)}
+                />
+                <Pressable
+                  disabled={chatLoading || !chatInput.trim()}
+                  onPress={() => triggerChatbotQuery(chatInput)}
+                  style={({ pressed }) => [
+                    styles.sendButton,
+                    { backgroundColor: getCategoryColor('All') },
+                    (chatLoading || !chatInput.trim()) && { opacity: 0.5 },
+                    pressed && { opacity: 0.8 }
+                  ]}
+                >
+                  <Ionicons name="arrow-up" size={16} color="#ffffff" />
+                </Pressable>
+              </View>
+            </KeyboardAvoidingView>
 
           </KeyboardAvoidingView>
         </View>
