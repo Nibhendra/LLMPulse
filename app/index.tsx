@@ -830,7 +830,7 @@ export default function HomeScreen() {
 
   const renderGatewayScreen = () => {
     return (
-      <View style={[styles.gatewayContainer, styles.bgLight]}>
+      <View style={[styles.gatewayContainer, isDark ? styles.bgDark : styles.bgLight]}>
 
         {/* Holographic Glowing Backdrop Circles */}
         <Animated.View 
@@ -854,18 +854,13 @@ export default function HomeScreen() {
           ]} 
         />
 
-
-
-
         <View 
           style={styles.gatewayScrollContent}
         >
           {/* Brand identity area */}
           <View style={styles.gatewayBrandSection}>
             <View style={[styles.gatewayLogoOuter, isDark ? styles.gatewayLogoOuterDark : styles.gatewayLogoOuterLight]}>
-              <View style={styles.gatewayLogoInner}>
-                <Ionicons name="flash" size={32} color="#ffffff" />
-              </View>
+              <Image source={require('../assets/images/icon.png')} style={{width: 68, height: 68, borderRadius: 34}} />
             </View>
             <Text style={[styles.gatewayBrandTitle, isDark ? styles.textPrimaryDark : styles.textPrimaryLight]}>
               LLM Pulse
