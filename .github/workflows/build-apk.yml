@@ -26,6 +26,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Generate google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > google-services.json
+
       - name: Generate Native Android Code
         run: npx expo prebuild --platform android --clean
 
