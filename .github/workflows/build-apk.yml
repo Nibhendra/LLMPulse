@@ -38,7 +38,7 @@ jobs:
         run: npx expo prebuild --platform android --clean
 
       - name: Restore consistent debug keystore (fixes Google Sign-In SHA-1)
-        run: echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > android/app/debug.keystore
+        run: cp debug.keystore android/app/debug.keystore
 
       - name: Setup Android SDK NDK
         run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
