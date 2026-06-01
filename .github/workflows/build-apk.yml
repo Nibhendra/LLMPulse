@@ -34,19 +34,14 @@ jobs:
       - name: Create google-services.json from secret
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > google-services.json
 
-      - name: Verify secrets are present
-        run: |
-          echo "=== .env contents (keys only) ==="
-          grep -o '^[^=]*' .env
-          echo "=== google-services.json exists ==="
-          ls -la google-services.json
-
       - name: Generate Native Android Code
         run: npx expo prebuild --platform android --clean
 
+      - name: Restore consistent debug keystore (fixes Google Sign-In SHA-1)
+        run: echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > android/app/debug.keystore
+
       - name: Setup Android SDK NDK
-        run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
+        run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
