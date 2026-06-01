@@ -1,0 +1,60 @@
+module.exports = {
+  expo: {
+    name: "LLM Pulse",
+    slug: "llm-pulse",
+    description: "Latest AI model updates, simplified.",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/images/icon.png",
+    scheme: "sdk54app",
+    userInterfaceStyle: "automatic",
+    newArchEnabled: true,
+    ios: {
+      supportsTablet: true
+    },
+    android: {
+      adaptiveIcon: {
+        backgroundColor: "#ffffff",
+        foregroundImage: "./assets/images/android-icon-foreground.png",
+        backgroundImage: "./assets/images/android-icon-background.png",
+        monochromeImage: "./assets/images/android-icon-monochrome.png"
+      },
+      edgeToEdgeEnabled: true,
+      predictiveBackGestureEnabled: false,
+      package: "com.nibhendra.llmpulse",
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON || "./google-services.json"
+    },
+    web: {
+      output: "static",
+      favicon: "./assets/images/favicon.png"
+    },
+    plugins: [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/splash-icon.png",
+          imageWidth: 200,
+          resizeMode: "contain",
+          backgroundColor: "#ffffff",
+          dark: {
+            backgroundColor: "#000000"
+          }
+        }
+      ],
+      "expo-web-browser",
+      "@react-native-google-signin/google-signin"
+    ],
+    experiments: {
+      typedRoutes: true,
+      reactCompiler: true
+    },
+    extra: {
+      router: {},
+      eas: {
+        projectId: "19b4fad5-29a8-4d0c-97a0-1d1a873730ff"
+      }
+    },
+    owner: "hunyyy_boy"
+  }
+};
