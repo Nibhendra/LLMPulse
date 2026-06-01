@@ -1,7 +1,7 @@
-name: Build Android APK (Instant)
+name: Build Android APK
 
 on:
-  workflow_dispatch: # Allows manual trigger from Actions tab
+  workflow_dispatch:
 
 jobs:
   build-apk:
@@ -26,26 +26,39 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Generate .env file
-        run: |
-          echo "${{ secrets.ENV }}" > .env
+      - name: Create .env file from secret
+        run: printf '%s' "$ENV_SECRET" > .env
+        env:
+          ENV_SECRET: ${{ secrets.ENV }}
 
-      - name: Generate google-services.json
+      - name: Create google-services.json from secret
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > google-services.json
+
+      - name: Verify secrets are present
+        run: |
+          echo "=== .env contents (keys only) ==="
+          grep -o '^[^=]*' .env
+          echo "=== google-services.json exists ==="
+          ls -la google-services.json
 
       - name: Generate Native Android Code
         run: npx expo prebuild --platform android --clean
 
-      - name: Install Android NDK
-        run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;27.1.12297006"
+      - name: Setup Android SDK NDK
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
 
-      - name: Build APK (Gradle)
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build Release APK
         run: |
           cd android
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --no-daemon
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: LLM-Pulse-App
           path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
