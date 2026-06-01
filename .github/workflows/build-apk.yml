@@ -29,6 +29,9 @@ jobs:
       - name: Generate Native Android Code
         run: npx expo prebuild --platform android --clean
 
+      - name: Install Android NDK
+        run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;27.1.12297006"
+
       - name: Build APK (Gradle)
         run: |
           cd android
