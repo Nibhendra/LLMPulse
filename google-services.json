@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "954265385918",
+    "project_id": "llmradar-8ad21",
+    "storage_bucket": "llmradar-8ad21.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954265385918:android:d5b126fecc5f7d0aec97ef",
+        "android_client_info": {
+          "package_name": "com.nibhendra.llmpulse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954265385918-6oe0nt6mla7jvjopstr85hi5bl73tto1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0gFp6Fq6-0dZUXQnZmXfBgrd-L-Bxld8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954265385918-6oe0nt6mla7jvjopstr85hi5bl73tto1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

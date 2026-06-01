@@ -1,0 +1,41 @@
+name: Build Android APK (Instant)
+
+on:
+  workflow_dispatch: # Allows manual trigger from Actions tab
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Native Android Code
+        run: npx expo prebuild --platform android --clean
+
+      - name: Build APK (Gradle)
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: LLM-Pulse-App
+          path: android/app/build/outputs/apk/debug/app-debug.apk
