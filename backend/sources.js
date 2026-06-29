@@ -3,14 +3,18 @@ module.exports = [
     name: "Anthropic / Claude",
     company: "Anthropic",
     category: "Claude",
-    feedUrl: "https://www.anthropic.com/index.xml",
+    feedUrl: "https://rsshub.bestblogs.dev/anthropic/news",
+    feedUrlFallback: [
+      "https://rsshub.app/anthropic/news",
+      "https://rsshub.moeyy.cn/anthropic/news"
+    ],
     defaultTags: ["claude", "anthropic", "llm"]
   },
   {
     name: "OpenAI Newsroom",
     company: "OpenAI",
     category: "OpenAI",
-    feedUrl: "https://openai.com/newsroom/rss.xml",
+    feedUrl: "https://openai.com/news/rss.xml",
     defaultTags: ["openai", "gpt", "llm"]
   },
   {
@@ -38,7 +42,7 @@ module.exports = [
     name: "LlamaIndex Blog",
     company: "LlamaIndex",
     category: "AI Coding Tools",
-    feedUrl: "https://blog.llamaindex.ai/feed",
+    feedUrl: "https://medium.com/feed/llamaindex",
     defaultTags: ["llamaindex", "rag", "agents"]
   }
 ];

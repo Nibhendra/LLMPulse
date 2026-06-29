@@ -58,8 +58,41 @@ async function fetchAndProcessUpdates() {
   for (const source of sources) {
     console.log(`\nFetching updates from: ${source.name} (${source.feedUrl})...`);
     
+    let response;
+    let rawText;
+    let feed;
+
+    const urlsToTry = source.feedUrlFallback 
+      ? [source.feedUrl, ...source.feedUrlFallback] 
+      : [source.feedUrl];
+
+    for (let u = 0; u < urlsToTry.length; u++) {
+      const currentUrl = urlsToTry[u];
+      try {
+        response = await fetch(currentUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+        });
+        if (response.ok) {
+          rawText = await response.text();
+          break; // Successfully fetched, stop trying other URLs
+        } else if (u === urlsToTry.length - 1) {
+          throw new Error(`Status code ${response.status}`);
+        }
+      } catch (err) {
+        if (u === urlsToTry.length - 1) {
+          throw err;
+        }
+        console.log(`Failed to fetch from ${currentUrl}, trying fallback...`);
+      }
+    }
+
     try {
-      const feed = await parser.parseURL(source.feedUrl);
+      // Sanitize raw '&' signs that are not already part of valid XML entities
+      const sanitizedText = rawText.replace(/&(?!(amp|lt|gt|quot|apos);)/g, '&amp;');
+      
+      feed = await parser.parseString(sanitizedText);
       console.log(`Found ${feed.items.length} items in feed.`);
 
       // Process only the top 3 most recent articles per run to save API usage and speed up execution
