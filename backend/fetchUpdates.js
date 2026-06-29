@@ -66,29 +66,29 @@ async function fetchAndProcessUpdates() {
       ? [source.feedUrl, ...source.feedUrlFallback] 
       : [source.feedUrl];
 
-    for (let u = 0; u < urlsToTry.length; u++) {
-      const currentUrl = urlsToTry[u];
-      try {
-        response = await fetch(currentUrl, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-          }
-        });
-        if (response.ok) {
-          rawText = await response.text();
-          break; // Successfully fetched, stop trying other URLs
-        } else if (u === urlsToTry.length - 1) {
-          throw new Error(`Status code ${response.status}`);
-        }
-      } catch (err) {
-        if (u === urlsToTry.length - 1) {
-          throw err;
-        }
-        console.log(`Failed to fetch from ${currentUrl}, trying fallback...`);
-      }
-    }
-
     try {
+      for (let u = 0; u < urlsToTry.length; u++) {
+        const currentUrl = urlsToTry[u];
+        try {
+          response = await fetch(currentUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+          });
+          if (response.ok) {
+            rawText = await response.text();
+            break; // Successfully fetched, stop trying other URLs
+          } else if (u === urlsToTry.length - 1) {
+            throw new Error(`Status code ${response.status}`);
+          }
+        } catch (err) {
+          if (u === urlsToTry.length - 1) {
+            throw err;
+          }
+          console.log(`Failed to fetch from ${currentUrl}, trying fallback...`);
+        }
+      }
+
       // Sanitize raw '&' signs that are not already part of valid XML entities
       const sanitizedText = rawText.replace(/&(?!(amp|lt|gt|quot|apos);)/g, '&amp;');
       
